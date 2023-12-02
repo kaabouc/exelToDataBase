@@ -59,7 +59,7 @@ public class ProduitController {
         }
     }
 
-    private Workbook createResultWorkbook(List<Produit> produits) {
+    public Workbook createResultWorkbook(List<Produit> produits) {
         Workbook workbook = new XSSFWorkbook();
 
         // Create sheet for product data
@@ -74,6 +74,29 @@ public class ProduitController {
 
         return workbook;
     }
+
+    private void createResultSheetHeader(Sheet sheet) {
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Insertion Result");
+    }
+
+    private void fillResultSheet(Sheet sheet, List<Produit> produits) {
+        for (int i = 0; i < produits.size(); i++) {
+            Produit produit = produits.get(i);
+            Row row = sheet.createRow(i + 1);
+            row.createCell(0).setCellValue(produit.getId());
+
+            // Add a result column based on the insertion status
+            Cell resultCell = row.createCell(1);
+            if (produit.getId() != null) {
+                resultCell.setCellValue("Success");
+            } else {
+                resultCell.setCellValue("Failed");
+            }
+        }
+    }
+
 
     private void createDataSheetHeader(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
@@ -94,25 +117,7 @@ public class ProduitController {
         }
     }
 
-    private void createResultSheetHeader(Sheet sheet) {
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("ID");
-        headerRow.createCell(1).setCellValue("Insertion Result");
-    }
 
-    private void fillResultSheet(Sheet sheet, List<Produit> produits) {
-        for (int i = 0; i < produits.size(); i++) {
-            Produit produit = produits.get(i);
-            Row row = sheet.createRow(i + 1);
-            row.createCell(0).setCellValue(produit.getId());
 
-            // Add a result column (you can customize the logic based on your needs)
-            Cell resultCell = row.createCell(1);
-            if (produit.getId() != null && produit.getId() > 0) {
-                resultCell.setCellValue("Success");
-            } else {
-                resultCell.setCellValue("Failed");
-            }
-        }
-    }
+
 }
