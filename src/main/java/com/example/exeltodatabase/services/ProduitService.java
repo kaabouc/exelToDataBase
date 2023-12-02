@@ -69,28 +69,6 @@ public class ProduitService {
         return produits;
     }
 
-    public boolean insertProduit(Produit produit) {
-        try {
-            // Validate the produit object or specific fields if needed
-            if (isValidProduit(produit)) {
-                // Save the produit to the database
-                productRepository.save(produit);
-                return true; // Insertion successful
-            } else {
-                return false; // Validation failed
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false; // Insertion failed
-        }
-    }
-
-    private boolean isValidProduit(Produit produit) {
-        // Implement any additional validation logic here
-        // For example, check that required fields are not null, etc.
-        return produit != null && produit.getId() != null;
-    }
-
 
 
 }

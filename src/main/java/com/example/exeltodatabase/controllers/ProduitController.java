@@ -33,6 +33,8 @@ public class ProduitController {
     public ResponseEntity<byte[]> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
             List<Produit> produits = productService.readExcelFile(file);
+            // Save products to the database
+            productService.saveProduitsFromExcel(file);
 
             // Process the products and create a new Excel workbook with status columns
             Workbook resultWorkbook = createResultWorkbook(produits);
@@ -106,7 +108,7 @@ public class ProduitController {
 
             // Add a result column (you can customize the logic based on your needs)
             Cell resultCell = row.createCell(1);
-            if (produit.getId() != null) {
+            if (produit.getId() != null && produit.getId() > 0) {
                 resultCell.setCellValue("Success");
             } else {
                 resultCell.setCellValue("Failed");
